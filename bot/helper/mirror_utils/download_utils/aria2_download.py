@@ -31,12 +31,11 @@ class AriaDownloadHelper(DownloadHelper):
             gdrive = GoogleDriveHelper(None)
             smsg, button = gdrive.drive_list(sname)
           if smsg:
-              dl.getListener().onDownloadError(f'😡 File is already available in drive. You should have search before mirror any file. You might get ban if you do this again. This download has been stopped.\n\n')
-              sendMarkup(" Here are the search results:👇", dl.getListener().bot, dl.getListener().update, button)
+              dl.getListener().onDownloadError(f'🤧 File udah ada di Yasir Drive. Cari dulu sebelum download. Download ini dihentikan.\n\n')
+              sendMarkup(" Here are the search results:👇👇", dl.getListener().bot, dl.getListener().update, button)
               aria2.remove([download])
           return
         update_all_messages()
-
     def __onDownloadComplete(self, api: API, gid):
         LOGGER.info(f"onDownloadComplete: {gid}")
         dl = getDownloadByGid(gid)
@@ -57,17 +56,17 @@ class AriaDownloadHelper(DownloadHelper):
     def __onDownloadPause(self, api, gid):
         LOGGER.info(f"onDownloadPause: {gid}")
         dl = getDownloadByGid(gid)
-        dl.getListener().onDownloadError('Download stopped by user!')
+        dl.getListener().onDownloadError('Download dihentikan pengguna!')
 
     @new_thread
     def __onDownloadStopped(self, api, gid):
         LOGGER.info(f"onDownloadStop: {gid}")
         dl = getDownloadByGid(gid)
-        if dl: dl.getListener().onDownloadError('Download stopped by user!')
+        if dl: dl.getListener().onDownloadError('Download dihentikan karena torrent nya mati!')
 
     @new_thread
     def __onDownloadError(self, api, gid):
-        sleep(0.5)  # sleep for split second to ensure proper dl gid update from onDownloadComplete
+        sleep(0.5) #sleep for split second to ensure proper dl gid update from onDownloadComplete
         LOGGER.info(f"onDownloadError: {gid}")
         dl = getDownloadByGid(gid)
         download = api.get_download(gid)
@@ -83,15 +82,14 @@ class AriaDownloadHelper(DownloadHelper):
                                       on_download_complete=self.__onDownloadComplete)
 
 
-    def add_download(self, link: str, path,listener):
+    def add_download(self, link: str, path, listener, filename):
         if is_magnet(link):
-            download = aria2.add_magnet(link, {'dir': path})
+            download = aria2.add_magnet(link, {'dir': path, 'out': filename})
         else:
-            download = aria2.add_uris([link], {'dir': path})
-        if download.error_message:  # no need to proceed further at this point
+            download = aria2.add_uris([link], {'dir': path, 'out': filename})
+        if download.error_message: #no need to proceed further at this point
             listener.onDownloadError(download.error_message)
-            return
+            return 
         with download_dict_lock:
-            download_dict[listener.uid] = AriaDownloadStatus(download.gid, listener)
+            download_dict[listener.uid] = AriaDownloadStatus(download.gid,listener)
             LOGGER.info(f"Started: {download.gid} DIR:{download.dir} ")
-
