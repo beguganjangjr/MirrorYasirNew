@@ -166,7 +166,7 @@ class MirrorListener(listeners.MirrorListeners):
             if BUTTON_THREE_NAME is not None and BUTTON_THREE_URL is not None:
                 buttons.buildbutton(f"{BUTTON_THREE_NAME}", f"{BUTTON_THREE_URL}")
             if BUTTON_FOUR_NAME is not None and BUTTON_FOUR_URL is not None:
-                share_url = requests.utils.requote_uri(f'{INDEX_URL}/{download_dict[self.uid].name()}/?a=view')
+                share_url = requests.utils.requote_uri(f'{INDEX_URL}/{download_dict[self.uid].name()}?a=view')
                 buttons.buildbutton("Stream Link", share_url)
             if BUTTON_FIVE_NAME is not None and BUTTON_FIVE_URL is not None:
                 buttons.buildbutton(f"{BUTTON_FIVE_NAME}", f"{BUTTON_FIVE_URL}")
