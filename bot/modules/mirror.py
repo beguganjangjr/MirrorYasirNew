@@ -86,7 +86,7 @@ class MirrorListener(listeners.MirrorListeners):
                     archive_result = subprocess.run(["extract", m_path])
                 if archive_result.returncode == 0:
                     threading.Thread(target=os.remove, args=(m_path,)).start()
-                    LOGGER.info(f"Deleting archive : {m_path}")
+                    LOGGER.info(f"Menghapus arsip : {m_path}")
                 else:
                     LOGGER.warning('Unable to extract archive! Uploading anyway')
                     path = f'{DOWNLOAD_DIR}{self.uid}/{name}'
@@ -174,7 +174,7 @@ class MirrorListener(listeners.MirrorListeners):
             else:
                 uname = f'<a href="tg://user?id={self.message.from_user.id}">{self.message.from_user.first_name}</a>'
             if uname is not None:
-                msg += f'\n\nMakasih {uname} udah menggunakan aku..'
+                msg += f'\n\nMakasih {uname} udah menggunakan aku, silahkan gabung TeamDrive buat akses link GDrive.'
             try:
                 fs_utils.clean_download(download_dict[self.uid].path())
             except FileNotFoundError:
