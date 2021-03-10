@@ -150,9 +150,9 @@ class MirrorListener(listeners.MirrorListeners):
             buttons = button_build.ButtonMaker()
             if SHORTENER is not None and SHORTENER_API is not None:
                 surl = requests.get('https://{}/api?api={}&url={}&format=text'.format(SHORTENER, SHORTENER_API, link)).text
-                buttons.buildbutton("💾⚡GDrive Link⚡💾", surl)
+                buttons.buildbutton("💾 GDrive Link 💾", surl)
             else:
-                buttons.buildbutton("💾⚡GDrive Link⚡💾", link)
+                buttons.buildbutton("💾 GDrive Link 💾", link)
             LOGGER.info(f'Done Uploading {download_dict[self.uid].name()}')
             if INDEX_URL is not None:
                 share_url = requests.utils.requote_uri(f'{INDEX_URL}/{download_dict[self.uid].name()}')
