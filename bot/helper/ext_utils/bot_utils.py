@@ -14,13 +14,13 @@ URL_REGEX = r"(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+"
 
 
 class MirrorStatus:
-    STATUS_UPLOADING = "Mengupload ke Yasir Drive...📤"
-    STATUS_DOWNLOADING = "Lagi Mendownload...📥"
-    STATUS_WAITING = "Diantrikan...📝"
+    STATUS_UPLOADING = "📤 Mengupload ke Yasir Drive..."
+    STATUS_DOWNLOADING = "📥 Lagi Mendownload..."
+    STATUS_WAITING = "📝 Diantrikan..."
     STATUS_FAILED = "Gagal 🚫. Membersihkan download"
-    STATUS_CANCELLED = "Dibatalkan ❎"
-    STATUS_ARCHIVING = "Mengarsipkan...🔐"
-    STATUS_EXTRACTING = "Mengekstrak...📂"
+    STATUS_CANCELLED = "❎ Dibatalkan"
+    STATUS_ARCHIVING = "🔐 Mengarsipkan..."
+    STATUS_EXTRACTING = "📂 Mengekstrak..."
 
 
 PROGRESS_MAX_SIZE = 100 // 8
@@ -93,15 +93,15 @@ def get_readable_message():
     with download_dict_lock:
         msg = ""
         for download in list(download_dict.values()):
-            msg += f"☘️ <code>{download.name()}</code>"
-            msg += f"\n🍂 <i>{download.status()}</i>"
+            msg += f"📝 <code>{download.name()}</code>"
+            msg += f"\n<i>{download.status()}</i>"
             if download.status() != MirrorStatus.STATUS_ARCHIVING and download.status() != MirrorStatus.STATUS_EXTRACTING:
-                msg += f"\n<code>{get_progress_bar_string(download)} {download.progress()}</code>"
+                msg += f"\n🌀 <code>{get_progress_bar_string(download)} {download.progress()}</code>"
                 if download.status() == MirrorStatus.STATUS_DOWNLOADING:
-                    msg += f"\n<b>⬇️ Terdownload :</b> {get_readable_file_size(download.processed_bytes())} dari {download.size()}"
+                    msg += f"\n📦 {get_readable_file_size(download.processed_bytes())} dari {download.size()}"
                 else:
-                    msg += f"\n<b>⬆️ Terupload :</b> {get_readable_file_size(download.processed_bytes())} dari {download.size()}"
-                msg += f"\n⚡️ {download.speed()} | ⌛️ {download.eta()} "
+                    msg += f"\n📦 {get_readable_file_size(download.processed_bytes())} dari {download.size()}"
+                msg += f"\n⚡️ {download.speed()} | ⏱ {download.eta()} "
                 # if hasattr(download, 'is_torrent'):
                 try:
                     msg += f"\n<b>Info :- Seeders:</b> {download.aria_download().num_seeders}" \
@@ -119,17 +119,17 @@ def get_readable_time(seconds: int) -> str:
     (days, remainder) = divmod(seconds, 86400)
     days = int(days)
     if days != 0:
-        result += f'{days}h'
+        result += f'{days} hari'
     (hours, remainder) = divmod(remainder, 3600)
     hours = int(hours)
     if hours != 0:
-        result += f'{hours}j'
+        result += f'{hours} jam'
     (minutes, seconds) = divmod(remainder, 60)
     minutes = int(minutes)
     if minutes != 0:
-        result += f'{minutes}m'
+        result += f'{minutes} menit'
     seconds = int(seconds)
-    result += f'{seconds}d'
+    result += f'{seconds} detik'
     return result
 
 
