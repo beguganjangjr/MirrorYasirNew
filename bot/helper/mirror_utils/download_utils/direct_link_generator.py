@@ -40,6 +40,8 @@ def direct_link_generator(link: str):
         return osdn(link)
     elif 'github.com' in link:
         return github(link)
+    elif 'racaty.net' in link:
+        return racaty(link)
     else:
         raise DirectDownloadLinkException(f'No Direct link function found for {link}')
 
@@ -67,6 +69,21 @@ def zippy_share(url: str) -> str:
             break
     dl_url = base_url + eval(dl_url)
     name = urllib.parse.unquote(dl_url.split('/')[-1])
+    return dl_url
+
+def racaty(url: str) -> str:
+    dl_url = ''
+    try:
+        link = re.findall(r'\bhttps?://.*racaty\.net\S+', url)[0]
+    except IndexError:
+        raise DirectDownloadLinkException("`No Racaty links found`\n")
+    reqs=requests.get(link)
+    bss=Bs(reqs.text,'html.parser')
+    op=bss.find('input',{'name':'op'})['value']
+    id=bss.find('input',{'name':'id'})['value']
+    rep=requests.post(rg[0],data={'op':op,'id':id})
+    bss2=Bs(rep.text,'html.parser')
+    dl_url=bss2.find('a',{'id':'uniqueExpirylink'})['href']
     return dl_url
 
 
