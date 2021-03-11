@@ -78,11 +78,11 @@ def racaty(url: str) -> str:
     except IndexError:
         raise DirectDownloadLinkException("`No Racaty links found`\n")
     reqs=requests.get(link)
-    bss=Bs(reqs.text,'html.parser')
+    bss=BeautifulSoup(reqs.text,'html.parser')
     op=bss.find('input',{'name':'op'})['value']
     id=bss.find('input',{'name':'id'})['value']
     rep=requests.post(rg[0],data={'op':op,'id':id})
-    bss2=Bs(rep.text,'html.parser')
+    bss2=BeautifulSoup(rep.text,'html.parser')
     dl_url=bss2.find('a',{'id':'uniqueExpirylink'})['href']
     return dl_url
 
