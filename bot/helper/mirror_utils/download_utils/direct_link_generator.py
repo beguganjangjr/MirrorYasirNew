@@ -81,7 +81,7 @@ def racaty(url: str) -> str:
     bss=BeautifulSoup(reqs.text,'html.parser')
     op=bss.find('input',{'name':'op'})['value']
     id=bss.find('input',{'name':'id'})['value']
-    rep=requests.post(rg[0],data={'op':op,'id':id})
+    rep=requests.post(link,data={'op':op,'id':id})
     bss2=BeautifulSoup(rep.text,'html.parser')
     dl_url=bss2.find('a',{'id':'uniqueExpirylink'})['href']
     return dl_url
