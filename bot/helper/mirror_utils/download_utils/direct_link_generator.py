@@ -42,8 +42,6 @@ def direct_link_generator(link: str):
         return github(link)
     elif 'racaty.net' in link:
         return racaty(link)
-    elif 'files.im' in link:
-        return files_im(link)
     else:
         raise DirectDownloadLinkException(f'No Direct link function found for {link}')
 
@@ -86,22 +84,6 @@ def racaty(url: str) -> str:
     rep=requests.post(link,data={'op':op,'id':id})
     bss2=BeautifulSoup(rep.text,'html.parser')
     dl_url=bss2.find('a',{'id':'uniqueExpirylink'})['href']
-    return dl_url
-
-
-def files_im(url: str) -> str:
-    dl_url = ''
-    try:
-        link = re.findall(r'\bhttps?://.*files\.im\S+', url)[0]
-    except IndexError:
-        raise DirectDownloadLinkException("`No Files.im links found`\n")
-    reqs=requests.get(link)
-    bss=BeautifulSoup(reqs.text,'html.parser')
-    op=bss.find('input',{'name':'op'})['value']
-    id=bss.find('input',{'name':'id'})['value']
-    rep=requests.post(link,data={'op':op,'id':id})
-    bss2=BeautifulSoup(rep.text,'html.parser')
-    dl_url=bss2.find('a', class_ = 'btn btn-dow')['href']
     return dl_url
 
 def yandex_disk(url: str) -> str:
