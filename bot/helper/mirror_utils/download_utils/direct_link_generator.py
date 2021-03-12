@@ -96,8 +96,7 @@ def files_im(url: str) -> str:
     except IndexError:
         raise DirectDownloadLinkException("`No Files.im links found`\n")
     page = BeautifulSoup(requests.get(link).content, 'lxml')
-    info = page.find('a', {'class': 'btn btn-dow'})
-    dl_url = info.get('href')
+    dl_url = page.find('a', {'class': 'btn btn-dow'}['href'])
     return dl_url
 
 def yandex_disk(url: str) -> str:
