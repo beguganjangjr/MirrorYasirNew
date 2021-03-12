@@ -95,13 +95,9 @@ def files_im(url: str) -> str:
         link = re.findall(r'\bhttps?://.*files\.im\S+', url)[0]
     except IndexError:
         raise DirectDownloadLinkException("`No Files.im links found`\n")
-    reqs=requests.get(link)
-    bss=BeautifulSoup(reqs.text,'html.parser')
-    op=bss.find('input',{'name':'op'})['value']
-    id=bss.find('input',{'name':'class'})['value']
-    rep=requests.post(link,data={'op':op,'id':id})
-    bss2=BeautifulSoup(rep.text,'html.parser')
-    dl_url=bss2.find('a',{'id':'btn btn-dow'})['href']
+    page = BeautifulSoup(requests.get(link).content, 'lxml')
+    info = page.find('a', {'class': 'btn btn-dow'})
+    dl_url = info.get('href')
     return dl_url
 
 def yandex_disk(url: str) -> str:
