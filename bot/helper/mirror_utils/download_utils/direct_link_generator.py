@@ -101,7 +101,7 @@ def files_im(url: str) -> str:
     id=bss.find('input',{'name':'id'})['value']
     rep=requests.post(link,data={'op':op,'id':id})
     bss2=BeautifulSoup(rep.text,'html.parser')
-    dl_url=bss2.find('a',{'class':'btn btn-dow'})['href']
+    dl_url=bss2.find('a', class_ :'btn btn-dow')['href']
     return dl_url
 
 def yandex_disk(url: str) -> str:
