@@ -98,7 +98,7 @@ def files_im(url: str) -> str:
     reqs=requests.get(link)
     bss=BeautifulSoup(reqs.text,'html.parser')
     op=bss.find('input',{'name':'op'})['value']
-    id=bss.find('input',{'name':'class'})['value']
+    id=bss.find('input',{'name':'id'})['value']
     rep=requests.post(link,data={'op':op,'id':id})
     bss2=BeautifulSoup(rep.text,'html.parser')
     dl_url=bss2.find('a',{'class':'btn btn-dow'})['href']
