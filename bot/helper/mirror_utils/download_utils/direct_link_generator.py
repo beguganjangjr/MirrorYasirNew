@@ -20,7 +20,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
-
+import lk21
 
 def direct_link_generator(link: str):
     """ direct links generator """
@@ -42,6 +42,10 @@ def direct_link_generator(link: str):
         return github(link)
     elif 'racaty.net' in link:
         return racaty(link)
+    elif 'letsupload.io' in link:
+        return letsupload(link)
+    elif 'hxfile.co' in link:
+        return hxfile(link)
     else:
         raise DirectDownloadLinkException(f'No Direct link function found for {link}')
 
@@ -84,6 +88,26 @@ def racaty(url: str) -> str:
     rep=requests.post(link,data={'op':op,'id':id})
     bss2=BeautifulSoup(rep.text,'html.parser')
     dl_url=bss2.find('a',{'id':'uniqueExpirylink'})['href']
+    return dl_url
+
+def letsupload(url: str) -> str:
+    dl_url = ''
+    try:
+        link = re.findall(r'\bhttps?://.*letsupload\.io\S+', url)[0]
+    except IndexError:
+        raise DirectDownloadLinkException("`No Letsupload links found`\n")
+    bypasser = lk21.Bypass()
+    dl_url=bypasser.bypass_url(link)
+    return dl_url
+
+def hxfile(url: str) -> str:
+    dl_url = ''
+    try:
+        link = re.findall(r'\bhttps?://.*hxfile\.co\S+', url)[0]
+    except IndexError:
+        raise DirectDownloadLinkException("`No HXFile links found`\n")
+    bypasser = lk21.Bypass()
+    dl_url=bypasser.bypass_url(link)
     return dl_url
 
 def yandex_disk(url: str) -> str:
